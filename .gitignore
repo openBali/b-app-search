@@ -1,0 +1,3 @@
+# 微信 / 支付宝 SDK 二进制（运行 Scripts/download-*-sdk.sh 后生成）
+LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework/
+LocalPackages/AlipaySDK/Frameworks/AlipaySDK.xcframework/

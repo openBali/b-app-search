@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12E9284C2FC3265400B3C130 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 12F025212FAB84000098B38E /* GoogleSignIn */; };
+		12F028112FAB88000098B38E /* TTGPuzzleVerifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028102FAB88000098B38E /* TTGPuzzleVerifyView.swift */; };
 		12F023B82FAB83310098B38E /* b_app_searchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F023B72FAB83310098B38E /* b_app_searchApp.swift */; };
 		12F023BA2FAB83310098B38E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F023B92FAB83310098B38E /* ContentView.swift */; };
 		12F023BC2FAB83370098B38E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12F023BB2FAB83370098B38E /* Assets.xcassets */; };
@@ -16,6 +18,74 @@
 		12F023CE2FAB83380098B38E /* b_app_searchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F023CD2FAB83380098B38E /* b_app_searchTests.swift */; };
 		12F023D82FAB83380098B38E /* b_app_searchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F023D72FAB83380098B38E /* b_app_searchUITests.swift */; };
 		12F023DA2FAB83380098B38E /* b_app_searchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F023D92FAB83380098B38E /* b_app_searchUITestsLaunchTests.swift */; };
+		12F024E02FAB83310098B38E /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F024E12FAB83310098B38E /* LoginView.swift */; };
+		12F025112FAB84000098B38E /* AuthConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F025102FAB84000098B38E /* AuthConfig.swift */; };
+		12F025132FAB84000098B38E /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F025122FAB84000098B38E /* AuthError.swift */; };
+		12F025152FAB84000098B38E /* GoogleAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F025142FAB84000098B38E /* GoogleAuthService.swift */; };
+		12F025172FAB84000098B38E /* WeChatAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F025162FAB84000098B38E /* WeChatAuthService.swift */; };
+		12F027562FABA300098B38E /* AppleAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027572FABA300098B38E /* AppleAuthService.swift */; };
+		12F027592FABA400098B38E /* PhoneLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027582FABA400098B38E /* PhoneLoginView.swift */; };
+		12F0275B2FABA500098B38E /* PhoneCountryCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0275A2FABA500098B38E /* PhoneCountryCode.swift */; };
+		12F0275D2FABA600098B38E /* SMSCaptchaChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0275C2FABA600098B38E /* SMSCaptchaChallengeView.swift */; };
+		12F025192FAB84000098B38E /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F025182FAB84000098B38E /* LoginViewModel.swift */; };
+		12F0251B2FAB84000098B38E /* UIApplication+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0251A2FAB84000098B38E /* UIApplication+TopViewController.swift */; };
+		12F026022FAB85000098B38E /* LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F026002FAB85000098B38E /* LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework */; };
+		12F0282A2FAC03000098B38E /* AlipaySDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F028292FAC03000098B38E /* AlipaySDK.xcframework */; };
+		12F028312FAC05000098B38E /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 12F028302FAC05000098B38E /* AlipaySDK.bundle */; };
+		12F026122FAB85000098B38E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F026102FAB85000098B38E /* SystemConfiguration.framework */; };
+		12F026142FAB85000098B38E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F026132FAB85000098B38E /* CoreTelephony.framework */; };
+		12F026162FAB85000098B38E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F026152FAB85000098B38E /* Security.framework */; };
+		12F026182FAB85000098B38E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F026172FAB85000098B38E /* CFNetwork.framework */; };
+		12F0261A2FAB85000098B38E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F026192FAB85000098B38E /* libz.tbd */; };
+		12F0261C2FAB85000098B38E /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F0261B2FAB85000098B38E /* libc++.tbd */; };
+		12F0261E2FAB85000098B38E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F0261D2FAB85000098B38E /* WebKit.framework */; };
+		12F0282E2FAC04000098B38E /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F0282D2FAC04000098B38E /* Network.framework */; };
+		12F027022FAB86000098B38E /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027012FAB86000098B38E /* MapView.swift */; };
+		12F027042FAB86000098B38E /* ImageGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027032FAB86000098B38E /* ImageGalleryView.swift */; };
+		12F027062FAB87000098B38E /* HomeSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027052FAB87000098B38E /* HomeSearchBar.swift */; };
+		12F027082FAB88000098B38E /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027072FAB88000098B38E /* UserSession.swift */; };
+		12F0270A2FAB89000098B38E /* GalleryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027092FAB89000098B38E /* GalleryStore.swift */; };
+		12F0270C2FAB89000098B38E /* GalleryManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0270B2FAB89000098B38E /* GalleryManageView.swift */; };
+		12F0270E2FAB8A000098B38E /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0270D2FAB8A000098B38E /* UserProfileView.swift */; };
+		12F027102FAB8A000098B38E /* ImageCommentsChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0270F2FAB8A000098B38E /* ImageCommentsChatView.swift */; };
+		12F027122FAB8B000098B38E /* GalleryCloudSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027112FAB8B000098B38E /* GalleryCloudSyncService.swift */; };
+		12F027142FAB8C000098B38E /* UserAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027132FAB8C000098B38E /* UserAvatarView.swift */; };
+		12F027162FAB8D000098B38E /* ImageEngagementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027152FAB8D000098B38E /* ImageEngagementStore.swift */; };
+		12F027182FAB8E000098B38E /* BackendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027172FAB8E000098B38E /* BackendAPI.swift */; };
+		12F0271A2FAB8F000098B38E /* GalleryFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027192FAB8F000098B38E /* GalleryFolder.swift */; };
+		12F0271C2FAB8F000098B38E /* HomeFolderBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0271B2FAB8F000098B38E /* HomeFolderBar.swift */; };
+		12F0271E2FAB90000098B38E /* HomeHorizontalMasonryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0271D2FAB90000098B38E /* HomeHorizontalMasonryView.swift */; };
+		12F027202FAB91000098B38E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0271F2FAB91000098B38E /* AppSettings.swift */; };
+		12F028212FAC00000098B38E /* AppSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028202FAC00000098B38E /* AppSkin.swift */; };
+		12F028232FAC01000098B38E /* GalleryMediaSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028222FAC01000098B38E /* GalleryMediaSupport.swift */; };
+		12F028252FAC02000098B38E /* AlipayAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028242FAC02000098B38E /* AlipayAuthService.swift */; };
+		12F028332FAC06000098B38E /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028322FAC06000098B38E /* SplashView.swift */; };
+		12F028272FAC02000098B38E /* AlipaySDKBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F028262FAC02000098B38E /* AlipaySDKBridge.m */; };
+		12F027222FAB91000098B38E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027212FAB91000098B38E /* SettingsView.swift */; };
+		12F027242FAB91000098B38E /* IOSPhotoLibrarySyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027232FAB91000098B38E /* IOSPhotoLibrarySyncService.swift */; };
+		12F027262FAB92000098B38E /* PrivateFolderManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027252FAB92000098B38E /* PrivateFolderManageView.swift */; };
+		12F027282FAB93000098B38E /* PublicProfileIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027272FAB93000098B38E /* PublicProfileIdentity.swift */; };
+		12F0272A2FAB93000098B38E /* FollowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027292FAB93000098B38E /* FollowStore.swift */; };
+		12F0272C2FAB93000098B38E /* PersonalHomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0272B2FAB93000098B38E /* PersonalHomePageView.swift */; };
+		12F0272E2FAB94000098B38E /* HomeSharedSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0272D2FAB94000098B38E /* HomeSharedSearchView.swift */; };
+		12F027302FAB95000098B38E /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0272F2FAB95000098B38E /* ChangePasswordView.swift */; };
+		12F027322FAB95000098B38E /* ProfileFieldEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027312FAB95000098B38E /* ProfileFieldEditorView.swift */; };
+		12F027342FAB96000098B38E /* SettingsDetailViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027332FAB96000098B38E /* SettingsDetailViews.swift */; };
+		12F027362FAB96000098B38E /* ProfileStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027352FAB96000098B38E /* ProfileStatsService.swift */; };
+		12F027382FAB96000098B38E /* ProfileShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027372FAB96000098B38E /* ProfileShareSheet.swift */; };
+		12F0273A2FAB97000098B38E /* AppSecurityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027392FAB97000098B38E /* AppSecurityService.swift */; };
+		12F0273C2FAB98000098B38E /* ImageEXIFLocationExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0273B2FAB98000098B38E /* ImageEXIFLocationExtractor.swift */; };
+		12F0273E2FAB99000098B38E /* MapFocusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0273D2FAB99000098B38E /* MapFocusController.swift */; };
+		12F027402FAB9A000098B38E /* MapAppLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0273F2FAB9A000098B38E /* MapAppLauncher.swift */; };
+		12F027422FAB9B000098B38E /* MapTravelEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027412FAB9B000098B38E /* MapTravelEstimator.swift */; };
+		12F027442FAB9C000098B38E /* HomeSelfieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027432FAB9C000098B38E /* HomeSelfieView.swift */; };
+		12F027462FAB9D000098B38E /* HomeTagFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027452FAB9D000098B38E /* HomeTagFilterBar.swift */; };
+		12F0274A2FAB9E000098B38E /* ImageTagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027492FAB9E000098B38E /* ImageTagStore.swift */; };
+		12F0274C2FAB9E000098B38E /* ImageTagSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0274B2FAB9E000098B38E /* ImageTagSettingsView.swift */; };
+		12F0274E2FAB9F000098B38E /* MapFilterPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F0274D2FAB9F000098B38E /* MapFilterPanel.swift */; };
+		12F027502FABA000098B38E /* HomeAdPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027532FABA000098B38E /* HomeAdPlacement.swift */; };
+		12F027512FABA100098B38E /* HomeAdStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027542FABA100098B38E /* HomeAdStore.swift */; };
+		12F027522FABA200098B38E /* HomeAdCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027552FABA200098B38E /* HomeAdCarouselView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +118,79 @@
 		12F023D32FAB83380098B38E /* b-app-searchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "b-app-searchUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		12F023D72FAB83380098B38E /* b_app_searchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = b_app_searchUITests.swift; sourceTree = "<group>"; };
 		12F023D92FAB83380098B38E /* b_app_searchUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = b_app_searchUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		12F024E12FAB83310098B38E /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		12F025102FAB84000098B38E /* AuthConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthConfig.swift; sourceTree = "<group>"; };
+		12F025122FAB84000098B38E /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
+		12F025142FAB84000098B38E /* GoogleAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthService.swift; sourceTree = "<group>"; };
+		12F025162FAB84000098B38E /* WeChatAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatAuthService.swift; sourceTree = "<group>"; };
+		12F027572FABA300098B38E /* AppleAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthService.swift; sourceTree = "<group>"; };
+		12F027582FABA400098B38E /* PhoneLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginView.swift; sourceTree = "<group>"; };
+		12F0275A2FABA500098B38E /* PhoneCountryCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneCountryCode.swift; sourceTree = "<group>"; };
+		12F0275C2FABA600098B38E /* SMSCaptchaChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSCaptchaChallengeView.swift; sourceTree = "<group>"; };
+		12F028102FAB88000098B38E /* TTGPuzzleVerifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTGPuzzleVerifyView.swift; sourceTree = "<group>"; };
+		12F025182FAB84000098B38E /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		12F0251A2FAB84000098B38E /* UIApplication+TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+TopViewController.swift"; sourceTree = "<group>"; };
+		12F0251C2FAB84000098B38E /* b-app-search-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "b-app-search-Bridging-Header.h"; sourceTree = "<group>"; };
+		12F0251D2FAB84000098B38E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		12F0251E2FAB84000098B38E /* b-app-search.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "b-app-search.entitlements"; sourceTree = "<group>"; };
+		12F026002FAB85000098B38E /* LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework; sourceTree = SOURCE_ROOT; };
+		12F028292FAC03000098B38E /* AlipaySDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AlipaySDK.xcframework; path = LocalPackages/AlipaySDK/Frameworks/AlipaySDK.xcframework; sourceTree = SOURCE_ROOT; };
+		12F028302FAC05000098B38E /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AlipaySDK.bundle; path = LocalPackages/AlipaySDK/Frameworks/AlipaySDK.xcframework/ios-arm64/AlipaySDK.framework/AlipaySDK.bundle; sourceTree = SOURCE_ROOT; };
+		12F026102FAB85000098B38E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		12F026132FAB85000098B38E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		12F026152FAB85000098B38E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		12F026172FAB85000098B38E /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		12F026192FAB85000098B38E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		12F0261B2FAB85000098B38E /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		12F0261D2FAB85000098B38E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		12F0282D2FAC04000098B38E /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = System/Library/Frameworks/Network.framework; sourceTree = SDKROOT; };
+		12F027012FAB86000098B38E /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		12F027032FAB86000098B38E /* ImageGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryView.swift; sourceTree = "<group>"; };
+		12F027052FAB87000098B38E /* HomeSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchBar.swift; sourceTree = "<group>"; };
+		12F027072FAB88000098B38E /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		12F027092FAB89000098B38E /* GalleryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryStore.swift; sourceTree = "<group>"; };
+		12F0270B2FAB89000098B38E /* GalleryManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryManageView.swift; sourceTree = "<group>"; };
+		12F0270D2FAB8A000098B38E /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
+		12F0270F2FAB8A000098B38E /* ImageCommentsChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsChatView.swift; sourceTree = "<group>"; };
+		12F027112FAB8B000098B38E /* GalleryCloudSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCloudSyncService.swift; sourceTree = "<group>"; };
+		12F027132FAB8C000098B38E /* UserAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvatarView.swift; sourceTree = "<group>"; };
+		12F027152FAB8D000098B38E /* ImageEngagementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEngagementStore.swift; sourceTree = "<group>"; };
+		12F027172FAB8E000098B38E /* BackendAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendAPI.swift; sourceTree = "<group>"; };
+		12F027192FAB8F000098B38E /* GalleryFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryFolder.swift; sourceTree = "<group>"; };
+		12F0271B2FAB8F000098B38E /* HomeFolderBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFolderBar.swift; sourceTree = "<group>"; };
+		12F0271D2FAB90000098B38E /* HomeHorizontalMasonryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHorizontalMasonryView.swift; sourceTree = "<group>"; };
+		12F0271F2FAB91000098B38E /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		12F028202FAC00000098B38E /* AppSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSkin.swift; sourceTree = "<group>"; };
+		12F028222FAC01000098B38E /* GalleryMediaSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryMediaSupport.swift; sourceTree = "<group>"; };
+		12F028242FAC02000098B38E /* AlipayAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlipayAuthService.swift; sourceTree = "<group>"; };
+		12F028322FAC06000098B38E /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		12F028262FAC02000098B38E /* AlipaySDKBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlipaySDKBridge.m; sourceTree = "<group>"; };
+		12F028282FAC02000098B38E /* AlipaySDKBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlipaySDKBridge.h; sourceTree = "<group>"; };
+		12F027212FAB91000098B38E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		12F027232FAB91000098B38E /* IOSPhotoLibrarySyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSPhotoLibrarySyncService.swift; sourceTree = "<group>"; };
+		12F027252FAB92000098B38E /* PrivateFolderManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateFolderManageView.swift; sourceTree = "<group>"; };
+		12F027272FAB93000098B38E /* PublicProfileIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicProfileIdentity.swift; sourceTree = "<group>"; };
+		12F027292FAB93000098B38E /* FollowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowStore.swift; sourceTree = "<group>"; };
+		12F0272B2FAB93000098B38E /* PersonalHomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalHomePageView.swift; sourceTree = "<group>"; };
+		12F0272D2FAB94000098B38E /* HomeSharedSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSharedSearchView.swift; sourceTree = "<group>"; };
+		12F0272F2FAB95000098B38E /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
+		12F027312FAB95000098B38E /* ProfileFieldEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFieldEditorView.swift; sourceTree = "<group>"; };
+		12F027332FAB96000098B38E /* SettingsDetailViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDetailViews.swift; sourceTree = "<group>"; };
+		12F027352FAB96000098B38E /* ProfileStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatsService.swift; sourceTree = "<group>"; };
+		12F027372FAB96000098B38E /* ProfileShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileShareSheet.swift; sourceTree = "<group>"; };
+		12F027392FAB97000098B38E /* AppSecurityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecurityService.swift; sourceTree = "<group>"; };
+		12F0273B2FAB98000098B38E /* ImageEXIFLocationExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEXIFLocationExtractor.swift; sourceTree = "<group>"; };
+		12F0273D2FAB99000098B38E /* MapFocusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFocusController.swift; sourceTree = "<group>"; };
+		12F0273F2FAB9A000098B38E /* MapAppLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAppLauncher.swift; sourceTree = "<group>"; };
+		12F027412FAB9B000098B38E /* MapTravelEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTravelEstimator.swift; sourceTree = "<group>"; };
+		12F027432FAB9C000098B38E /* HomeSelfieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSelfieView.swift; sourceTree = "<group>"; };
+		12F027452FAB9D000098B38E /* HomeTagFilterBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTagFilterBar.swift; sourceTree = "<group>"; };
+		12F027492FAB9E000098B38E /* ImageTagStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagStore.swift; sourceTree = "<group>"; };
+		12F0274B2FAB9E000098B38E /* ImageTagSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagSettingsView.swift; sourceTree = "<group>"; };
+		12F0274D2FAB9F000098B38E /* MapFilterPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilterPanel.swift; sourceTree = "<group>"; };
+		12F027532FABA000098B38E /* HomeAdPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAdPlacement.swift; sourceTree = "<group>"; };
+		12F027542FABA100098B38E /* HomeAdStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAdStore.swift; sourceTree = "<group>"; };
+		12F027552FABA200098B38E /* HomeAdCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAdCarouselView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +198,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12E9284C2FC3265400B3C130 /* GoogleSignIn in Frameworks */,
+				12F026022FAB85000098B38E /* LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework in Frameworks */,
+				12F0282A2FAC03000098B38E /* AlipaySDK.xcframework in Frameworks */,
+				12F026122FAB85000098B38E /* SystemConfiguration.framework in Frameworks */,
+				12F026142FAB85000098B38E /* CoreTelephony.framework in Frameworks */,
+				12F026162FAB85000098B38E /* Security.framework in Frameworks */,
+				12F026182FAB85000098B38E /* CFNetwork.framework in Frameworks */,
+				12F0261A2FAB85000098B38E /* libz.tbd in Frameworks */,
+				12F0261C2FAB85000098B38E /* libc++.tbd in Frameworks */,
+				12F0261E2FAB85000098B38E /* WebKit.framework in Frameworks */,
+				12F0282E2FAC04000098B38E /* Network.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,13 +229,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		12E9284D2FC3265400B3C130 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				12F026102FAB85000098B38E /* SystemConfiguration.framework */,
+				12F026132FAB85000098B38E /* CoreTelephony.framework */,
+				12F026152FAB85000098B38E /* Security.framework */,
+				12F026172FAB85000098B38E /* CFNetwork.framework */,
+				12F026192FAB85000098B38E /* libz.tbd */,
+				12F0261B2FAB85000098B38E /* libc++.tbd */,
+				12F0261D2FAB85000098B38E /* WebKit.framework */,
+				12F0282D2FAC04000098B38E /* Network.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		12F023AB2FAB83310098B38E = {
 			isa = PBXGroup;
 			children = (
+				12F026012FAB85000098B38E /* Vendor */,
 				12F023B62FAB83310098B38E /* b-app-search */,
 				12F023CC2FAB83380098B38E /* b-app-searchTests */,
 				12F023D62FAB83380098B38E /* b-app-searchUITests */,
 				12F023B52FAB83310098B38E /* Products */,
+				12E9284D2FC3265400B3C130 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,7 +270,69 @@
 			isa = PBXGroup;
 			children = (
 				12F023B72FAB83310098B38E /* b_app_searchApp.swift */,
+				12F028322FAC06000098B38E /* SplashView.swift */,
 				12F023B92FAB83310098B38E /* ContentView.swift */,
+				12F027012FAB86000098B38E /* MapView.swift */,
+				12F027032FAB86000098B38E /* ImageGalleryView.swift */,
+				12F027092FAB89000098B38E /* GalleryStore.swift */,
+				12F0270B2FAB89000098B38E /* GalleryManageView.swift */,
+				12F0270D2FAB8A000098B38E /* UserProfileView.swift */,
+				12F0270F2FAB8A000098B38E /* ImageCommentsChatView.swift */,
+				12F027232FAB91000098B38E /* IOSPhotoLibrarySyncService.swift */,
+				12F027212FAB91000098B38E /* SettingsView.swift */,
+				12F027252FAB92000098B38E /* PrivateFolderManageView.swift */,
+				12F027272FAB93000098B38E /* PublicProfileIdentity.swift */,
+				12F027292FAB93000098B38E /* FollowStore.swift */,
+				12F0272B2FAB93000098B38E /* PersonalHomePageView.swift */,
+				12F0272D2FAB94000098B38E /* HomeSharedSearchView.swift */,
+				12F0272F2FAB95000098B38E /* ChangePasswordView.swift */,
+				12F027312FAB95000098B38E /* ProfileFieldEditorView.swift */,
+				12F027332FAB96000098B38E /* SettingsDetailViews.swift */,
+				12F027352FAB96000098B38E /* ProfileStatsService.swift */,
+				12F027372FAB96000098B38E /* ProfileShareSheet.swift */,
+				12F027392FAB97000098B38E /* AppSecurityService.swift */,
+				12F0273B2FAB98000098B38E /* ImageEXIFLocationExtractor.swift */,
+				12F0273D2FAB99000098B38E /* MapFocusController.swift */,
+				12F0273F2FAB9A000098B38E /* MapAppLauncher.swift */,
+				12F027412FAB9B000098B38E /* MapTravelEstimator.swift */,
+				12F027432FAB9C000098B38E /* HomeSelfieView.swift */,
+				12F027452FAB9D000098B38E /* HomeTagFilterBar.swift */,
+				12F027492FAB9E000098B38E /* ImageTagStore.swift */,
+				12F0274B2FAB9E000098B38E /* ImageTagSettingsView.swift */,
+				12F0274D2FAB9F000098B38E /* MapFilterPanel.swift */,
+				12F027532FABA000098B38E /* HomeAdPlacement.swift */,
+				12F027542FABA100098B38E /* HomeAdStore.swift */,
+				12F027552FABA200098B38E /* HomeAdCarouselView.swift */,
+				12F0271F2FAB91000098B38E /* AppSettings.swift */,
+				12F028202FAC00000098B38E /* AppSkin.swift */,
+				12F028222FAC01000098B38E /* GalleryMediaSupport.swift */,
+				12F0271D2FAB90000098B38E /* HomeHorizontalMasonryView.swift */,
+				12F0271B2FAB8F000098B38E /* HomeFolderBar.swift */,
+				12F027192FAB8F000098B38E /* GalleryFolder.swift */,
+				12F027172FAB8E000098B38E /* BackendAPI.swift */,
+				12F027112FAB8B000098B38E /* GalleryCloudSyncService.swift */,
+				12F027132FAB8C000098B38E /* UserAvatarView.swift */,
+				12F027152FAB8D000098B38E /* ImageEngagementStore.swift */,
+				12F027052FAB87000098B38E /* HomeSearchBar.swift */,
+				12F024E12FAB83310098B38E /* LoginView.swift */,
+				12F025182FAB84000098B38E /* LoginViewModel.swift */,
+				12F027072FAB88000098B38E /* UserSession.swift */,
+				12F025102FAB84000098B38E /* AuthConfig.swift */,
+				12F025122FAB84000098B38E /* AuthError.swift */,
+				12F025142FAB84000098B38E /* GoogleAuthService.swift */,
+				12F025162FAB84000098B38E /* WeChatAuthService.swift */,
+				12F028242FAC02000098B38E /* AlipayAuthService.swift */,
+				12F028282FAC02000098B38E /* AlipaySDKBridge.h */,
+				12F028262FAC02000098B38E /* AlipaySDKBridge.m */,
+				12F027572FABA300098B38E /* AppleAuthService.swift */,
+				12F027582FABA400098B38E /* PhoneLoginView.swift */,
+				12F0275A2FABA500098B38E /* PhoneCountryCode.swift */,
+				12F0275C2FABA600098B38E /* SMSCaptchaChallengeView.swift */,
+				12F028102FAB88000098B38E /* TTGPuzzleVerifyView.swift */,
+				12F0251A2FAB84000098B38E /* UIApplication+TopViewController.swift */,
+				12F0251C2FAB84000098B38E /* b-app-search-Bridging-Header.h */,
+				12F0251D2FAB84000098B38E /* Info.plist */,
+				12F0251E2FAB84000098B38E /* b-app-search.entitlements */,
 				12F023BB2FAB83370098B38E /* Assets.xcassets */,
 				12F023C02FAB83370098B38E /* Persistence.swift */,
 				12F023C22FAB83370098B38E /* b_app_search.xcdatamodeld */,
@@ -133,6 +366,16 @@
 			path = "b-app-searchUITests";
 			sourceTree = "<group>";
 		};
+		12F026012FAB85000098B38E /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				12F026002FAB85000098B38E /* LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework */,
+				12F028292FAC03000098B38E /* AlipaySDK.xcframework */,
+				12F028302FAC05000098B38E /* AlipaySDK.bundle */,
+			);
+			name = Vendor;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -149,6 +392,9 @@
 			dependencies = (
 			);
 			name = "b-app-search";
+			packageProductDependencies = (
+				12F025212FAB84000098B38E /* GoogleSignIn */,
+			);
 			productName = "b-app-search";
 			productReference = 12F023B42FAB83310098B38E /* b-app-search.app */;
 			productType = "com.apple.product-type.application";
@@ -221,6 +467,9 @@
 				Base,
 			);
 			mainGroup = 12F023AB2FAB83310098B38E;
+			packageReferences = (
+				12F025202FAB84000098B38E /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			productRefGroup = 12F023B52FAB83310098B38E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -239,6 +488,7 @@
 			files = (
 				12F023BF2FAB83370098B38E /* Preview Assets.xcassets in Resources */,
 				12F023BC2FAB83370098B38E /* Assets.xcassets in Resources */,
+				12F028312FAC05000098B38E /* AlipaySDK.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +516,65 @@
 				12F023C42FAB83370098B38E /* b_app_search.xcdatamodeld in Sources */,
 				12F023C12FAB83370098B38E /* Persistence.swift in Sources */,
 				12F023BA2FAB83310098B38E /* ContentView.swift in Sources */,
+				12F027022FAB86000098B38E /* MapView.swift in Sources */,
+				12F027042FAB86000098B38E /* ImageGalleryView.swift in Sources */,
+				12F0270A2FAB89000098B38E /* GalleryStore.swift in Sources */,
+				12F0270C2FAB89000098B38E /* GalleryManageView.swift in Sources */,
+				12F0270E2FAB8A000098B38E /* UserProfileView.swift in Sources */,
+				12F027102FAB8A000098B38E /* ImageCommentsChatView.swift in Sources */,
+				12F027122FAB8B000098B38E /* GalleryCloudSyncService.swift in Sources */,
+				12F027142FAB8C000098B38E /* UserAvatarView.swift in Sources */,
+				12F027162FAB8D000098B38E /* ImageEngagementStore.swift in Sources */,
+				12F027182FAB8E000098B38E /* BackendAPI.swift in Sources */,
+				12F0271A2FAB8F000098B38E /* GalleryFolder.swift in Sources */,
+				12F0271C2FAB8F000098B38E /* HomeFolderBar.swift in Sources */,
+				12F0271E2FAB90000098B38E /* HomeHorizontalMasonryView.swift in Sources */,
+				12F027202FAB91000098B38E /* AppSettings.swift in Sources */,
+				12F028212FAC00000098B38E /* AppSkin.swift in Sources */,
+				12F028232FAC01000098B38E /* GalleryMediaSupport.swift in Sources */,
+				12F027222FAB91000098B38E /* SettingsView.swift in Sources */,
+				12F027262FAB92000098B38E /* PrivateFolderManageView.swift in Sources */,
+				12F027282FAB93000098B38E /* PublicProfileIdentity.swift in Sources */,
+				12F0272A2FAB93000098B38E /* FollowStore.swift in Sources */,
+				12F0272C2FAB93000098B38E /* PersonalHomePageView.swift in Sources */,
+				12F0272E2FAB94000098B38E /* HomeSharedSearchView.swift in Sources */,
+				12F027302FAB95000098B38E /* ChangePasswordView.swift in Sources */,
+				12F027322FAB95000098B38E /* ProfileFieldEditorView.swift in Sources */,
+				12F027342FAB96000098B38E /* SettingsDetailViews.swift in Sources */,
+				12F027362FAB96000098B38E /* ProfileStatsService.swift in Sources */,
+				12F027382FAB96000098B38E /* ProfileShareSheet.swift in Sources */,
+				12F0273A2FAB97000098B38E /* AppSecurityService.swift in Sources */,
+				12F0273C2FAB98000098B38E /* ImageEXIFLocationExtractor.swift in Sources */,
+				12F0273E2FAB99000098B38E /* MapFocusController.swift in Sources */,
+				12F027402FAB9A000098B38E /* MapAppLauncher.swift in Sources */,
+				12F027422FAB9B000098B38E /* MapTravelEstimator.swift in Sources */,
+				12F027442FAB9C000098B38E /* HomeSelfieView.swift in Sources */,
+				12F027462FAB9D000098B38E /* HomeTagFilterBar.swift in Sources */,
+				12F0274A2FAB9E000098B38E /* ImageTagStore.swift in Sources */,
+				12F0274C2FAB9E000098B38E /* ImageTagSettingsView.swift in Sources */,
+				12F0274E2FAB9F000098B38E /* MapFilterPanel.swift in Sources */,
+				12F027502FABA000098B38E /* HomeAdPlacement.swift in Sources */,
+				12F027512FABA100098B38E /* HomeAdStore.swift in Sources */,
+				12F027522FABA200098B38E /* HomeAdCarouselView.swift in Sources */,
+				12F027242FAB91000098B38E /* IOSPhotoLibrarySyncService.swift in Sources */,
+				12F027062FAB87000098B38E /* HomeSearchBar.swift in Sources */,
+				12F024E02FAB83310098B38E /* LoginView.swift in Sources */,
+				12F025192FAB84000098B38E /* LoginViewModel.swift in Sources */,
+				12F027082FAB88000098B38E /* UserSession.swift in Sources */,
+				12F025112FAB84000098B38E /* AuthConfig.swift in Sources */,
+				12F025132FAB84000098B38E /* AuthError.swift in Sources */,
+				12F025152FAB84000098B38E /* GoogleAuthService.swift in Sources */,
+				12F025172FAB84000098B38E /* WeChatAuthService.swift in Sources */,
+				12F028252FAC02000098B38E /* AlipayAuthService.swift in Sources */,
+				12F028272FAC02000098B38E /* AlipaySDKBridge.m in Sources */,
+				12F027562FABA300098B38E /* AppleAuthService.swift in Sources */,
+				12F027592FABA400098B38E /* PhoneLoginView.swift in Sources */,
+				12F0275B2FABA500098B38E /* PhoneCountryCode.swift in Sources */,
+				12F0275D2FABA600098B38E /* SMSCaptchaChallengeView.swift in Sources */,
+				12F028112FAB88000098B38E /* TTGPuzzleVerifyView.swift in Sources */,
+				12F0251B2FAB84000098B38E /* UIApplication+TopViewController.swift in Sources */,
 				12F023B82FAB83310098B38E /* b_app_searchApp.swift in Sources */,
+				12F028332FAC06000098B38E /* SplashView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,12 +730,28 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "b-app-search/b-app-search.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"b-app-search/Preview Content\"";
 				DEVELOPMENT_TEAM = T93F885NSK;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/LocalPackages/AlipaySDK/Frameworks",
+					"$(SRCROOT)/LocalPackages/WechatOpenSDK/Frameworks",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework/ios-arm64_armv7/Headers",
+					"$(SRCROOT)/LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework/ios-arm64_i386_x86_64-simulator/Headers",
+					"$(SRCROOT)/LocalPackages/AlipaySDK/Frameworks/AlipaySDK.xcframework/ios-arm64/AlipaySDK.framework/Headers",
+					"$(SRCROOT)/LocalPackages/AlipaySDK/Frameworks/AlipaySDK.xcframework/ios-arm64_x86_64-simulator/AlipaySDK.framework/Headers",
+				);
+				INFOPLIST_FILE = "b-app-search/Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "用于在地图上显示您的当前位置";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "用于选择图片进行以图搜图";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -438,9 +762,14 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.zhink.biz.app.b-app-search";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhink.app.bizapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "b-app-search/b-app-search-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -451,12 +780,28 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "b-app-search/b-app-search.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"b-app-search/Preview Content\"";
 				DEVELOPMENT_TEAM = T93F885NSK;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/LocalPackages/AlipaySDK/Frameworks",
+					"$(SRCROOT)/LocalPackages/WechatOpenSDK/Frameworks",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework/ios-arm64_armv7/Headers",
+					"$(SRCROOT)/LocalPackages/WechatOpenSDK/Frameworks/WechatOpenSDK.xcframework/ios-arm64_i386_x86_64-simulator/Headers",
+					"$(SRCROOT)/LocalPackages/AlipaySDK/Frameworks/AlipaySDK.xcframework/ios-arm64/AlipaySDK.framework/Headers",
+					"$(SRCROOT)/LocalPackages/AlipaySDK/Frameworks/AlipaySDK.xcframework/ios-arm64_x86_64-simulator/AlipaySDK.framework/Headers",
+				);
+				INFOPLIST_FILE = "b-app-search/Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "用于在地图上显示您的当前位置";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "用于选择图片进行以图搜图";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -467,9 +812,14 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.zhink.biz.app.b-app-search";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhink.app.bizapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "b-app-search/b-app-search-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -591,6 +941,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		12F025202FAB84000098B38E /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = exactVersion;
+				version = 7.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		12F025212FAB84000098B38E /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 12F025202FAB84000098B38E /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		12F023C22FAB83370098B38E /* b_app_search.xcdatamodeld */ = {

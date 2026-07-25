@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1041321590753-hcu127j0e53lc9t60ooo40du64q14vcl</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wxREPLACE_WITH_WECHAT_APP_ID</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>alipay</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>bappsearchalipay</string>
+			</array>
+		</dict>
+	</array>
+	<key>GIDClientID</key>
+	<string>1041321590753-hcu127j0e53lc9t60ooo40du64q14vcl.apps.googleusercontent.com</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>weixin</string>
+		<string>weixinULAPI</string>
+		<string>alipay</string>
+		<string>alipays</string>
+		<string>comgooglemaps</string>
+		<string>iosamap</string>
+	</array>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>开启相册同步后，App 会将你的图片保存到 iOS 相册相簿中。</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>开启相册同步后，App 需要访问照片库以创建相簿并保存图片。</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>用于通过 Face ID 快速解锁 App。</string>
+</dict>
+</plist>
