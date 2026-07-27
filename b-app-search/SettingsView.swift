@@ -124,6 +124,12 @@ struct SettingsView: View {
             } label: {
               Label("安全", systemImage: "lock.shield.fill")
             }
+
+            NavigationLink {
+              ActivityCenterView()
+            } label: {
+              Label("活动", systemImage: "gift.fill")
+            }
           }
 
           Section {

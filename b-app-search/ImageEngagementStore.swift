@@ -147,28 +147,40 @@ final class ImageEngagementStore: ObservableObject {
   func toggleLike(for engagementKey: String) -> Bool {
     guard !engagementKey.isEmpty else { return false }
     var updated = likedKeys
+    let willLike: Bool
     if updated.contains(engagementKey) {
       updated.remove(engagementKey)
+      willLike = false
     } else {
       updated.insert(engagementKey)
+      willLike = true
     }
     likedKeys = updated
     persist()
-    return likedKeys.contains(engagementKey)
+    if willLike {
+      ActivityStore.shared.record(.likeAdded())
+    }
+    return willLike
   }
 
   @discardableResult
   func toggleFavorite(for engagementKey: String) -> Bool {
     guard !engagementKey.isEmpty else { return false }
     var updated = favoritedKeys
+    let willFavorite: Bool
     if updated.contains(engagementKey) {
       updated.remove(engagementKey)
+      willFavorite = false
     } else {
       updated.insert(engagementKey)
+      willFavorite = true
     }
     favoritedKeys = updated
     persist()
-    return favoritedKeys.contains(engagementKey)
+    if willFavorite {
+      ActivityStore.shared.record(.favoriteAdded())
+    }
+    return willFavorite
   }
 
   func addComment(engagementKey: String, author: String, content: String) {
@@ -187,6 +199,7 @@ final class ImageEngagementStore: ObservableObject {
     byKey[engagementKey] = list
     commentsByEngagementKey = byKey
     persist()
+    ActivityStore.shared.record(.commentPosted())
   }
 
   private func loadFromDisk() {

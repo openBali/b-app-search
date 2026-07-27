@@ -175,6 +175,8 @@ private struct HomeView: View {
 
             ScrollView {
               VStack(alignment: .leading, spacing: 10) {
+                HomeActivityBanner()
+
                 HStack {
                   Spacer(minLength: 0)
                   selfieNetworkEntry
@@ -191,6 +193,7 @@ private struct HomeView: View {
         .animation(.easeInOut(duration: 0.2), value: isSearchActive)
       }
       .navigationBarHidden(true)
+      .activityRewardToast()
       .onAppear {
         syncSharedIndex()
         Task { await homeAdStore.fetchPlacements() }
@@ -563,5 +566,6 @@ struct ContentView_Previews: PreviewProvider {
       .environmentObject(ImageEngagementStore.shared)
       .environmentObject(ImageTagStore.shared)
       .environmentObject(HomeAdStore.shared)
+      .environmentObject(ActivityStore.shared)
   }
 }

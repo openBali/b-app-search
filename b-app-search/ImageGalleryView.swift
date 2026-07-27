@@ -673,6 +673,7 @@ private struct GalleryImageOverlay: View {
   var compactActions: Bool
   var onLocationTap: (() -> Void)?
 
+  @EnvironmentObject private var engagementStore: ImageEngagementStore
   @State private var showShareHint = false
   @State private var showBeautifyHint = false
 
@@ -705,6 +706,13 @@ private struct GalleryImageOverlay: View {
         GalleryActionButtons(
           iconSize: compactActions ? 14 : 18,
           buttonSize: compactActions ? 34 : 40,
+          isLiked: engagementStore.isLiked(image.engagementKey),
+          likeCountLabel: HomeEngagementFormatting.formatCount(
+            engagementStore.likeCount(for: image.engagementKey)
+          ),
+          onLike: {
+            _ = engagementStore.toggleLike(for: image.engagementKey)
+          },
           onShare: { showShareHint = true },
           onBeautify: { showBeautifyHint = true }
         )
@@ -792,11 +800,38 @@ private struct GalleryImageTagBadge: View {
 private struct GalleryActionButtons: View {
   var iconSize: CGFloat = 16
   var buttonSize: CGFloat = 36
+  var isLiked: Bool = false
+  var likeCountLabel: String = ""
+  var onLike: (() -> Void)?
   let onShare: () -> Void
   let onBeautify: () -> Void
 
   var body: some View {
     HStack(spacing: 8) {
+      if let onLike {
+        Button(action: onLike) {
+          VStack(spacing: 2) {
+            Image(systemName: isLiked ? "heart.fill" : "heart")
+              .font(.system(size: iconSize, weight: .semibold))
+              .foregroundStyle(isLiked ? Color(red: 0.98, green: 0.35, blue: 0.42) : .white)
+              .frame(width: buttonSize, height: buttonSize)
+              .background(.ultraThinMaterial, in: Circle())
+              .overlay {
+                Circle()
+                  .strokeBorder(.white.opacity(0.25), lineWidth: 0.5)
+              }
+            if !likeCountLabel.isEmpty {
+              Text(likeCountLabel)
+                .font(.system(size: 9, weight: .bold))
+                .foregroundStyle(.white)
+                .monospacedDigit()
+            }
+          }
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(isLiked ? "取消点赞" : "点赞")
+      }
+
       overlayIconButton(systemName: "square.and.arrow.up", action: onShare)
       overlayIconButton(systemName: "wand.and.stars", action: onBeautify)
     }

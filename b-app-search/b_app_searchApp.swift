@@ -38,6 +38,7 @@ private struct RootView: View {
     @StateObject private var followStore = FollowStore.shared
     @StateObject private var tagStore = ImageTagStore.shared
     @StateObject private var homeAdStore = HomeAdStore.shared
+    @StateObject private var activityStore = ActivityStore.shared
 
     private var preferredColorScheme: ColorScheme? {
         AppAppearance(rawValue: appearanceRaw)?.colorScheme
@@ -63,11 +64,13 @@ private struct RootView: View {
                         .environmentObject(followStore)
                         .environmentObject(tagStore)
                         .environmentObject(homeAdStore)
+                        .environmentObject(activityStore)
                 // } else {
                 //     LoginView(isLoggedIn: $isLoggedIn)
                 // }
             }
         }
+        .environmentObject(activityStore)
         .applyAppSkin(appSkin)
         .preferredColorScheme(preferredColorScheme)
         .onAppear {

@@ -114,7 +114,10 @@ extension BackendAPI {
           status: .mock, summary: "以图搜图", legacyNote: "HomeSearchService.searchByImage 随机样例"),
     // Home ads
     .init(id: "home.adPlacements", domain: "首页", method: "GET", path: "/home/ad-placements",
-          status: .mock, summary: "首页广告推荐位列表", legacyNote: "HomeAdStore.fetchPlacements")
+          status: .mock, summary: "首页广告推荐位列表", legacyNote: "HomeAdStore.fetchPlacements"),
+    // Activities
+    .init(id: "activities.active", domain: "活动", method: "GET", path: "/activities/active",
+          status: .mock, summary: "下发进行中运营活动", legacyNote: "ActivityStore.fetchCampaigns")
   ]
 }
 
@@ -792,6 +795,27 @@ enum BackendAPI {
       )
       let idSet = Set(response.imageIds)
       return candidateImages.filter { idSet.contains($0.id) }
+    }
+  }
+
+  // MARK: Activities
+
+  enum Activities {
+    struct ListResponse: Codable {
+      let campaigns: [ActivityCampaign]
+    }
+
+    /// 拉取进行中的运营活动（规则由后端下发，客户端按 trigger 动态执行）。
+    static func fetchActiveCampaigns() async throws -> [ActivityCampaign] {
+      if APIConfig.useMockBackend {
+        try await Task.sleep(nanoseconds: 250_000_000)
+        return ActivityCampaign.mockCampaigns
+      }
+
+      let response: ListResponse = try await APIClient.request(.get, path: "/activities/active")
+      return response.campaigns
+        .filter(\.isActive)
+        .sorted { $0.sortOrder < $1.sortOrder }
     }
   }
 }

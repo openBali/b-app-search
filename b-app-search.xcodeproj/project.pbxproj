@@ -60,6 +60,9 @@
 		12F028232FAC01000098B38E /* GalleryMediaSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028222FAC01000098B38E /* GalleryMediaSupport.swift */; };
 		12F028252FAC02000098B38E /* AlipayAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028242FAC02000098B38E /* AlipayAuthService.swift */; };
 		12F028332FAC06000098B38E /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028322FAC06000098B38E /* SplashView.swift */; };
+		12F028352FAC07000098B38E /* ActivityModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028342FAC07000098B38E /* ActivityModels.swift */; };
+		12F028372FAC07000098B38E /* ActivityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028362FAC07000098B38E /* ActivityStore.swift */; };
+		12F028392FAC07000098B38E /* ActivityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F028382FAC07000098B38E /* ActivityViews.swift */; };
 		12F028272FAC02000098B38E /* AlipaySDKBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F028262FAC02000098B38E /* AlipaySDKBridge.m */; };
 		12F027222FAB91000098B38E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027212FAB91000098B38E /* SettingsView.swift */; };
 		12F027242FAB91000098B38E /* IOSPhotoLibrarySyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F027232FAB91000098B38E /* IOSPhotoLibrarySyncService.swift */; };
@@ -164,6 +167,9 @@
 		12F028222FAC01000098B38E /* GalleryMediaSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryMediaSupport.swift; sourceTree = "<group>"; };
 		12F028242FAC02000098B38E /* AlipayAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlipayAuthService.swift; sourceTree = "<group>"; };
 		12F028322FAC06000098B38E /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		12F028342FAC07000098B38E /* ActivityModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityModels.swift; sourceTree = "<group>"; };
+		12F028362FAC07000098B38E /* ActivityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStore.swift; sourceTree = "<group>"; };
+		12F028382FAC07000098B38E /* ActivityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViews.swift; sourceTree = "<group>"; };
 		12F028262FAC02000098B38E /* AlipaySDKBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlipaySDKBridge.m; sourceTree = "<group>"; };
 		12F028282FAC02000098B38E /* AlipaySDKBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlipaySDKBridge.h; sourceTree = "<group>"; };
 		12F027212FAB91000098B38E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -271,6 +277,9 @@
 			children = (
 				12F023B72FAB83310098B38E /* b_app_searchApp.swift */,
 				12F028322FAC06000098B38E /* SplashView.swift */,
+				12F028342FAC07000098B38E /* ActivityModels.swift */,
+				12F028362FAC07000098B38E /* ActivityStore.swift */,
+				12F028382FAC07000098B38E /* ActivityViews.swift */,
 				12F023B92FAB83310098B38E /* ContentView.swift */,
 				12F027012FAB86000098B38E /* MapView.swift */,
 				12F027032FAB86000098B38E /* ImageGalleryView.swift */,
@@ -575,6 +584,9 @@
 				12F0251B2FAB84000098B38E /* UIApplication+TopViewController.swift in Sources */,
 				12F023B82FAB83310098B38E /* b_app_searchApp.swift in Sources */,
 				12F028332FAC06000098B38E /* SplashView.swift in Sources */,
+				12F028352FAC07000098B38E /* ActivityModels.swift in Sources */,
+				12F028372FAC07000098B38E /* ActivityStore.swift in Sources */,
+				12F028392FAC07000098B38E /* ActivityViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
