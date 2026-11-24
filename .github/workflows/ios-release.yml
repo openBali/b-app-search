@@ -22,12 +22,6 @@ jobs:
           sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
           xcodebuild -version
 
-      - name: Install dependencies (如果有 CocoaPods)
-        run: |
-          cd ios
-          pod install
-        # 如果是 Flutter 项目，改成 flutter pub get 等
-
       - name: Build Archive
         run: |
           xcodebuild archive \
