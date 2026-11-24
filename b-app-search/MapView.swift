@@ -62,7 +62,10 @@ struct MapView: View {
   @State private var selectedImage: GalleryImage?
   @State private var selectedMediaDestination: GalleryMediaOpenDestination?
   @State private var selectedCountries: Set<String> = []
+  @State private var selectedProvinces: Set<String> = []
   @State private var selectedCities: Set<String> = []
+  @State private var selectedCategories: Set<GalleryImageCategory> = []
+  @State private var selectedNearbyRadius: MapNearbyRadiusFilter?
   @State private var filterPanelExpansion: CGFloat = 0
 
   private var allImagePins: [GalleryImage] {
@@ -71,11 +74,12 @@ struct MapView: View {
 
   private var imagePins: [GalleryImage] {
     allImagePins.filter { image in
-      let country = MapImageLocationFilter.country(for: image)
-      let city = MapImageLocationFilter.city(for: image)
-      let countryMatch = selectedCountries.isEmpty || selectedCountries.contains(country)
-      let cityMatch = selectedCities.isEmpty || selectedCities.contains(city)
-      return countryMatch && cityMatch
+      let resolved = MapImageLocationFilter.resolve(image)
+      let countryMatch = selectedCountries.isEmpty || selectedCountries.contains(resolved.country)
+      let regionMatch = matchesRegionFilter(resolved)
+      let nearbyMatch = matchesNearbyFilter(image)
+      let categoryMatch = selectedCategories.isEmpty || selectedCategories.contains(image.category)
+      return countryMatch && regionMatch && nearbyMatch && categoryMatch
     }
   }
 
@@ -83,9 +87,6 @@ struct MapView: View {
     Array(Set(allImagePins.map(MapImageLocationFilter.country(for:)))).sorted()
   }
 
-  private var availableCities: [String] {
-    Array(Set(allImagePins.map(MapImageLocationFilter.city(for:)))).sorted()
-  }
   /// 比例尺较大（视野较小）时展示单点；比例尺较小时展示聚合数量
   private let detailedPinSpanThreshold: Double = 0.035
 
@@ -113,14 +114,10 @@ struct MapView: View {
     return imagePins.first(where: { $0.id == id })
   }
 
-  private var activeCategories: [GalleryImageCategory] {
-    Array(Set(imagePins.map(\.category))).sorted { $0.displayName < $1.displayName }
-  }
-
   var body: some View {
     NavigationStack {
       GeometryReader { geometry in
-        let maxPanelHeight = geometry.size.height * 0.5
+        let maxPanelHeight = geometry.size.height * 0.58
 
         ZStack(alignment: .bottom) {
           Map(
@@ -156,14 +153,17 @@ struct MapView: View {
           VStack(spacing: 0) {
             MapTopFilterPanel(
               countries: availableCountries,
-              cities: availableCities,
               selectedCountries: $selectedCountries,
+              selectedProvinces: $selectedProvinces,
               selectedCities: $selectedCities,
+              selectedCategories: $selectedCategories,
+              selectedNearbyRadius: $selectedNearbyRadius,
               expansion: $filterPanelExpansion,
+              hasUserLocation: locationManager.userCoordinate != nil,
               maxHeight: maxPanelHeight
             )
-            .padding(.horizontal, 12)
-            .padding(.top, 4)
+            .padding(.horizontal, 14)
+            .padding(.top, 8)
 
             HStack {
               Spacer()
@@ -179,7 +179,7 @@ struct MapView: View {
               }
             }
             .padding(.horizontal, 16)
-            .padding(.top, 8)
+            .padding(.top, 10)
 
             Spacer()
 
@@ -204,16 +204,9 @@ struct MapView: View {
                 }
               }
               .padding(.horizontal, 16)
-              .padding(.bottom, 10)
+              .padding(.bottom, 16)
               .transition(.move(edge: .bottom).combined(with: .opacity))
             }
-
-            HStack(alignment: .bottom, spacing: 12) {
-              MapPointerLayerLegend(categories: activeCategories)
-              Spacer(minLength: 0)
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 6)
           }
         }
       }
@@ -241,13 +234,40 @@ struct MapView: View {
       .onChange(of: selectedCountries) { _ in
         syncSelectionAfterFilterChange()
       }
+      .onChange(of: selectedProvinces) { _ in
+        syncSelectionAfterFilterChange()
+      }
       .onChange(of: selectedCities) { _ in
+        syncSelectionAfterFilterChange()
+      }
+      .onChange(of: selectedNearbyRadius) { _ in
+        syncSelectionAfterFilterChange()
+      }
+      .onChange(of: selectedCategories) { _ in
         syncSelectionAfterFilterChange()
       }
       .fullScreenCover(item: $selectedMediaDestination) { destination in
         GalleryMediaDestinationView(destination: destination)
       }
     }
+  }
+
+  private func matchesRegionFilter(_ resolved: MapResolvedLocation) -> Bool {
+    if selectedProvinces.isEmpty, selectedCities.isEmpty {
+      return true
+    }
+    if let province = resolved.province, selectedProvinces.contains(province) {
+      return true
+    }
+    return selectedCities.contains(resolved.city)
+  }
+
+  private func matchesNearbyFilter(_ image: GalleryImage) -> Bool {
+    guard let radius = selectedNearbyRadius else { return true }
+    guard let userCoordinate = locationManager.userCoordinate else { return false }
+    let userLocation = CLLocation(latitude: userCoordinate.latitude, longitude: userCoordinate.longitude)
+    let imageLocation = CLLocation(latitude: image.latitude, longitude: image.longitude)
+    return userLocation.distance(from: imageLocation) <= radius.meters
   }
 
   private func isHighlighted(_ image: GalleryImage) -> Bool {
@@ -482,30 +502,7 @@ private struct MapPointerPinTail: Shape {
   }
 }
 
-// MARK: - Legend
-
-private struct MapPointerLayerLegend: View {
-  let categories: [GalleryImageCategory]
-
-  var body: some View {
-    FlowLayout(spacing: 6) {
-      ForEach(categories) { category in
-        HStack(spacing: 5) {
-          Circle()
-            .fill(category.pinColor)
-            .frame(width: 9, height: 9)
-            .overlay {
-              Circle().strokeBorder(.white, lineWidth: 1)
-            }
-          Text(category.displayName)
-            .font(.caption2.weight(.semibold))
-            .foregroundStyle(.primary)
-        }
-        .shadow(color: .white.opacity(0.75), radius: 2)
-      }
-    }
-  }
-}
+// MARK: - Location actions
 
 private struct MapLocationActionBar: View {
   let image: GalleryImage
@@ -788,51 +785,6 @@ private struct MapCalloutIconButton: View {
         .background(background, in: Circle())
     }
     .buttonStyle(.plain)
-  }
-}
-
-// MARK: - Simple flow layout for legend chips
-
-private struct FlowLayout: Layout {
-  var spacing: CGFloat = 8
-
-  func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-    let result = arrange(proposal: proposal, subviews: subviews)
-    return result.size
-  }
-
-  func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-    let result = arrange(proposal: proposal, subviews: subviews)
-    for (index, position) in result.positions.enumerated() {
-      subviews[index].place(
-        at: CGPoint(x: bounds.minX + position.x, y: bounds.minY + position.y),
-        proposal: .unspecified
-      )
-    }
-  }
-
-  private func arrange(proposal: ProposedViewSize, subviews: Subviews) -> (size: CGSize, positions: [CGPoint]) {
-    let maxWidth = proposal.width ?? .infinity
-    var positions: [CGPoint] = []
-    var x: CGFloat = 0
-    var y: CGFloat = 0
-    var rowHeight: CGFloat = 0
-    var maxX: CGFloat = 0
-
-    for subview in subviews {
-      let size = subview.sizeThatFits(.unspecified)
-      if x + size.width > maxWidth, x > 0 {
-        x = 0
-        y += rowHeight + spacing
-        rowHeight = 0
-      }
-      positions.append(CGPoint(x: x, y: y))
-      rowHeight = max(rowHeight, size.height)
-      x += size.width + spacing
-      maxX = max(maxX, x - spacing)
-    }
-
-    return (CGSize(width: maxX, height: y + rowHeight), positions)
   }
 }
 

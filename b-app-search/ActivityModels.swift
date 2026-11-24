@@ -64,10 +64,71 @@ struct ActivityCampaign: Identifiable, Codable, Hashable {
   let sortOrder: Int
   let rule: ActivityRule
   let reward: ActivityReward
+  /// 首页提示条文案模板，支持占位符：`{remaining}` `{progress}` `{target}` `{reward}` `{title}`。
+  /// 为空时由客户端按规则自动拼装。
+  let bannerTip: String?
   /// 预留扩展字段（后端动态参数）。
   let metadata: [String: String]?
 
   var targetCount: Int { rule.targetCount }
+
+  init(
+    id: String,
+    title: String,
+    subtitle: String,
+    isActive: Bool,
+    sortOrder: Int,
+    rule: ActivityRule,
+    reward: ActivityReward,
+    bannerTip: String? = nil,
+    metadata: [String: String]? = nil
+  ) {
+    self.id = id
+    self.title = title
+    self.subtitle = subtitle
+    self.isActive = isActive
+    self.sortOrder = sortOrder
+    self.rule = rule
+    self.reward = reward
+    self.bannerTip = bannerTip
+    self.metadata = metadata
+  }
+
+  /// 根据进度生成首页提示条文案（优先用后台 `bannerTip`）。
+  func resolvedBannerTip(progress: ActivityProgress) -> String {
+    let remaining = max(targetCount - progress.currentCount, 0)
+
+    if remaining == 0 {
+      if let done = metadata?["bannerTipDone"]?.trimmingCharacters(in: .whitespacesAndNewlines),
+         !done.isEmpty {
+        return done
+          .replacingOccurrences(of: "{title}", with: title)
+          .replacingOccurrences(of: "{reward}", with: reward.title)
+          .replacingOccurrences(of: "{progress}", with: "\(progress.currentCount)")
+          .replacingOccurrences(of: "{target}", with: "\(targetCount)")
+          .replacingOccurrences(of: "{remaining}", with: "0")
+      }
+      return "\(title)：本轮已达标，可领\(reward.title)"
+    }
+
+    if let template = bannerTip?.trimmingCharacters(in: .whitespacesAndNewlines), !template.isEmpty {
+      return template
+        .replacingOccurrences(of: "{title}", with: title)
+        .replacingOccurrences(of: "{reward}", with: reward.title)
+        .replacingOccurrences(of: "{progress}", with: "\(progress.currentCount)")
+        .replacingOccurrences(of: "{target}", with: "\(targetCount)")
+        .replacingOccurrences(of: "{remaining}", with: "\(remaining)")
+    }
+
+    let actionVerb: String
+    switch rule.trigger {
+    case .likeAdded: actionVerb = "赞"
+    case .favoriteAdded: actionVerb = "收藏"
+    case .commentPosted: actionVerb = "评论"
+    case .shareCompleted: actionVerb = "分享"
+    }
+    return "\(title)：再\(actionVerb) \(remaining) 次送\(reward.title)"
+  }
 }
 
 struct ActivityProgress: Codable, Hashable {
@@ -157,6 +218,7 @@ extension ActivityCampaign {
         detail: "无消费券抵扣",
         brandName: "瑞幸咖啡"
       ),
+      bannerTip: "{title}：再赞 {remaining} 次送{reward}",
       metadata: [
         "partner": "luckin",
         "redeemHint": "到店出示兑换码"

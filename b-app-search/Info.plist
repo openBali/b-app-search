@@ -17,7 +17,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wxREPLACE_WITH_WECHAT_APP_ID</string>
+				<string>wx1c72416dea68e625</string>
 			</array>
 		</dict>
 		<dict>
@@ -36,11 +36,14 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>weixin</string>
+        <string>wechat</string>
+        <string>wx</string>
 		<string>weixinULAPI</string>
 		<string>alipay</string>
 		<string>alipays</string>
 		<string>comgooglemaps</string>
 		<string>iosamap</string>
+		<string>diditaxi</string>
 	</array>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>开启相册同步后，App 会将你的图片保存到 iOS 相册相簿中。</string>

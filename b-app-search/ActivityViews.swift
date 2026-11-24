@@ -5,9 +5,13 @@
 
 import SwiftUI
 
-/// 首页轻量活动进度条。
-struct HomeActivityBanner: View {
+/// 首页活动提示条。
+struct HomeActivityTipBanner: View {
   @EnvironmentObject private var activityStore: ActivityStore
+  @Environment(\.appSkin) private var appSkin
+
+  private var tokens: AppSkinTokens { appSkin.tokens }
+  private var accent: Color { Color(red: 0.95, green: 0.35, blue: 0.32) }
 
   var body: some View {
     if let campaign = activityStore.primaryCampaign {
@@ -15,32 +19,41 @@ struct HomeActivityBanner: View {
       NavigationLink {
         ActivityCenterView()
       } label: {
-        VStack(alignment: .leading, spacing: 8) {
-          HStack(spacing: 8) {
-            Image(systemName: "gift.fill")
-              .foregroundStyle(Color(red: 0.95, green: 0.35, blue: 0.32))
-            Text(campaign.title)
-              .font(.subheadline.weight(.semibold))
-              .foregroundStyle(.primary)
-            Spacer(minLength: 0)
-            Text("\(progress.currentCount)/\(campaign.targetCount)")
-              .font(.caption.weight(.bold))
-              .monospacedDigit()
-              .foregroundStyle(.secondary)
-          }
+        HStack(spacing: 8) {
+          Image(systemName: "gift.fill")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(accent)
 
-          ProgressView(value: activityStore.progressFraction(for: campaign))
-            .tint(Color(red: 0.95, green: 0.35, blue: 0.32))
-
-          Text(campaign.reward.title + " · " + campaign.reward.detail)
-            .font(.caption2)
-            .foregroundStyle(.secondary)
+          Text(campaign.resolvedBannerTip(progress: progress))
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(tokens.primaryText ?? Color.primary)
             .lineLimit(1)
+            .minimumScaleFactor(0.8)
+
+          Spacer(minLength: 0)
+
+          Text("\(progress.currentCount)/\(campaign.targetCount)")
+            .font(.caption2.weight(.bold))
+            .monospacedDigit()
+            .foregroundStyle(tokens.secondaryText ?? Color.secondary)
+
+          Image(systemName: "chevron.right")
+            .font(.caption2.weight(.bold))
+            .foregroundStyle(tokens.secondaryText ?? Color.secondary)
         }
-        .padding(12)
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(
+          tokens.cardBackground,
+          in: Capsule(style: .continuous)
+        )
+        .overlay {
+          Capsule(style: .continuous)
+            .strokeBorder(tokens.stroke, lineWidth: 1)
+        }
       }
       .buttonStyle(.plain)
+      .accessibilityLabel("\(campaign.title)，进度 \(progress.currentCount)/\(campaign.targetCount)")
     }
   }
 }

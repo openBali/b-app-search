@@ -14,9 +14,9 @@ struct HomeAdCarouselView: View {
   @Environment(\.appSkin) private var appSkin
 
   @State private var currentIndex = 0
-  @State private var isHovering = false
-  @State private var isTouchRevealed = false
-  @State private var hideControlsTask: Task<Void, Never>?
+  // @State private var isHovering = false
+  // @State private var isTouchRevealed = false
+  // @State private var hideControlsTask: Task<Void, Never>?
 
   private let cardHeight: CGFloat = 188
   private let heroHeight: CGFloat = 96
@@ -25,9 +25,11 @@ struct HomeAdCarouselView: View {
     [.skinHero] + placements.map { .ad($0) }
   }
 
+  /*
   private var showsPageControls: Bool {
     pages.count > 1 && (isHovering || isTouchRevealed)
   }
+  */
 
   var body: some View {
     ZStack(alignment: .top) {
@@ -40,6 +42,7 @@ struct HomeAdCarouselView: View {
       .tabViewStyle(.page(indexDisplayMode: .never))
       .frame(height: cardHeight)
 
+      /*
       if pages.count > 1 {
         pageArrowOverlay
           .frame(height: heroHeight)
@@ -54,7 +57,9 @@ struct HomeAdCarouselView: View {
           .padding(.bottom, 18)
           .allowsHitTesting(false)
       }
+      */
     }
+    /*
     .onHover { hovering in
       withAnimation(.easeInOut(duration: 0.18)) {
         isHovering = hovering
@@ -69,6 +74,7 @@ struct HomeAdCarouselView: View {
         revealControlsTemporarily()
       }
     )
+    */
     .onChange(of: pages.count) { newCount in
       if currentIndex >= newCount {
         currentIndex = max(newCount - 1, 0)
@@ -76,6 +82,9 @@ struct HomeAdCarouselView: View {
     }
     .onChange(of: appSkin.rawValue) { _ in
       currentIndex = 0
+    }
+    .onAppear {
+      _ = isLoading
     }
   }
 
@@ -90,6 +99,7 @@ struct HomeAdCarouselView: View {
     }
   }
 
+  /*
   private var pageArrowOverlay: some View {
     HStack {
       pageArrowButton(systemName: "chevron.left", accessibilityLabel: "上一页") {
@@ -160,6 +170,7 @@ struct HomeAdCarouselView: View {
     hideControlsTask?.cancel()
     hideControlsTask = nil
   }
+  */
 }
 
 private enum HomeAdCarouselPage: Identifiable, Hashable {
@@ -174,15 +185,43 @@ private enum HomeAdCarouselPage: Identifiable, Hashable {
   }
 }
 
-/// 皮肤 Hero：作为广告轮播第一张。
+/// 皮肤 Hero：仅保留图片 + 白色大标题。
 private struct HomeSkinHeroCard: View {
   let heroHeight: CGFloat
 
   @Environment(\.appSkin) private var appSkin
 
-  private var tokens: AppSkinTokens { appSkin.tokens }
+  // private var tokens: AppSkinTokens { appSkin.tokens }
 
   var body: some View {
+    ZStack(alignment: .bottomLeading) {
+      Image(skinAsset: .homeHero, skin: appSkin)
+        .resizable()
+        .scaledToFill()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .clipped()
+
+      // 底部轻微遮罩，保证白字可读
+      LinearGradient(
+        colors: [.clear, .black.opacity(0.45)],
+        startPoint: .center,
+        endPoint: .bottom
+      )
+      .allowsHitTesting(false)
+
+      Text(appSkin.title)
+        .font(.largeTitle.weight(.bold))
+        .foregroundStyle(.white)
+        .shadow(color: .black.opacity(0.35), radius: 6, y: 2)
+        .padding(.horizontal, 16)
+        .padding(.bottom, 18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .clipShape(RoundedRectangle(cornerRadius: appSkin.tokens.cardCornerRadius, style: .continuous))
+    .accessibilityLabel(appSkin.title)
+
+    /*
     VStack(alignment: .leading, spacing: 0) {
       Image(skinAsset: .homeHero, skin: appSkin)
         .resizable()
@@ -238,6 +277,7 @@ private struct HomeSkinHeroCard: View {
     .shadow(color: .black.opacity(0.05), radius: 5, y: 2)
     .accessibilityElement(children: .combine)
     .accessibilityLabel("主题 \(appSkin.title)，\(appSkin.subtitle)")
+    */
   }
 }
 
@@ -247,9 +287,34 @@ private struct HomeAdPlacementCard: View {
 
   @Environment(\.appSkin) private var appSkin
 
-  private var tokens: AppSkinTokens { appSkin.tokens }
+  // private var tokens: AppSkinTokens { appSkin.tokens }
 
   var body: some View {
+    ZStack(alignment: .bottomLeading) {
+      heroImage
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .clipped()
+
+      LinearGradient(
+        colors: [.clear, .black.opacity(0.45)],
+        startPoint: .center,
+        endPoint: .bottom
+      )
+      .allowsHitTesting(false)
+
+      Text(placement.brandName)
+        .font(.largeTitle.weight(.bold))
+        .foregroundStyle(.white)
+        .shadow(color: .black.opacity(0.35), radius: 6, y: 2)
+        .padding(.horizontal, 16)
+        .padding(.bottom, 18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .clipShape(RoundedRectangle(cornerRadius: appSkin.tokens.cardCornerRadius, style: .continuous))
+    .accessibilityLabel(placement.brandName)
+
+    /*
     VStack(alignment: .leading, spacing: 0) {
       heroImage
 
@@ -284,6 +349,7 @@ private struct HomeAdPlacementCard: View {
     .shadow(color: .black.opacity(0.05), radius: 5, y: 2)
     .accessibilityElement(children: .combine)
     .accessibilityLabel("\(placement.brandName)，\(placement.hotProductCopy)")
+    */
   }
 
   private var heroImage: some View {
@@ -300,8 +366,8 @@ private struct HomeAdPlacementCard: View {
           .overlay { ProgressView() }
       }
     }
-    .frame(height: heroHeight)
-    .frame(maxWidth: .infinity)
+    // .frame(height: heroHeight)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
     .clipped()
   }
 
@@ -314,6 +380,7 @@ private struct HomeAdPlacementCard: View {
       }
   }
 
+  /*
   @ViewBuilder
   private var brandLogo: some View {
     if let logoURL = placement.brandLogoURL {
@@ -365,6 +432,7 @@ private struct HomeAdPlacementCard: View {
     }
     .frame(maxWidth: .infinity, alignment: .leading)
   }
+  */
 }
 
 struct HomeAdCarouselView_Previews: PreviewProvider {

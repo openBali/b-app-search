@@ -5,8 +5,8 @@
 //  Created by Danis on 2026/5/6.
 //
 
-import CoreLocation
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
   @Environment(\.appSkin) private var appSkin
@@ -35,6 +35,15 @@ struct ContentView: View {
     }
     .tint(appSkin.tokens.accent)
     .environmentObject(mapFocus)
+    // 只挂胶囊固有尺寸；左右边由浮钮内部 offset 处理，避免全屏吞点击
+    .overlay(alignment: .trailing) {
+      FloatingShortcutOverlay(
+        onOpenHomeTab: { selectedTab = 0 },
+        onOpenMapTab: { selectedTab = 1 }
+      )
+      // 允许半隐时略微画出安全区，避免被裁成“消失”
+      .ignoresSafeArea(edges: .trailing)
+    }
   }
 
   private func openMapForImage(_ image: GalleryImage) {
@@ -49,7 +58,6 @@ private struct HomeView: View {
   @Environment(\.appSkin) private var appSkin
   @EnvironmentObject private var galleryStore: GalleryStore
   @EnvironmentObject private var tagStore: ImageTagStore
-  @EnvironmentObject private var engagementStore: ImageEngagementStore
   @EnvironmentObject private var homeAdStore: HomeAdStore
 
   @State private var isSearchActive = false
@@ -66,19 +74,6 @@ private struct HomeView: View {
   }
 
   private var selfieTint: Color { appSkin.tokens.selfieTint }
-  private var networkTint: Color { appSkin.tokens.networkTint }
-
-  private var homeMileageKilometers: Double {
-    HomeStatsMetrics.mileageKilometers(for: sharedImages)
-  }
-
-  private var homeShareCount: Int {
-    sharedImages.count
-  }
-
-  private var homeLikeCount: Int {
-    sharedImages.reduce(0) { $0 + engagementStore.likeCount(for: $1.engagementKey) }
-  }
 
   private var homeSearchHeader: some View {
     HStack(spacing: 10) {
@@ -157,26 +152,20 @@ private struct HomeView: View {
             )
             .transition(.opacity)
           } else {
-            // 搜索 → 统计 → 广告轮播(第一张为皮肤 Hero) → 内容流
-            HomeStatsBar(
-              mileageKilometers: homeMileageKilometers,
-              shareCount: homeShareCount,
-              likeCount: homeLikeCount
-            )
-            .padding(.horizontal, homeHorizontalPadding)
-            .padding(.bottom, 8)
-
+            // 搜索 → Hero 广告轮播 → 活动提示 → 瀑布流
             HomeAdCarouselView(
               placements: homeAdStore.placements,
               isLoading: homeAdStore.isLoading
             )
             .padding(.horizontal, homeHorizontalPadding)
-            .padding(.bottom, 8)
+            .padding(.bottom, 10)
+
+            HomeActivityTipBanner()
+              .padding(.horizontal, homeHorizontalPadding)
+              .padding(.bottom, 8)
 
             ScrollView {
               VStack(alignment: .leading, spacing: 10) {
-                HomeActivityBanner()
-
                 HStack {
                   Spacer(minLength: 0)
                   selfieNetworkEntry
@@ -252,6 +241,7 @@ private struct HomeView: View {
         GalleryWaterfallView(
           images: sharedImages,
           horizontalInset: 0,
+          groupSimilarImages: true,
           onImageTap: { image in
             selectedMediaDestination = .open(image, in: sharedImages)
             if let index = sharedImages.firstIndex(where: { $0.id == image.id }) {
@@ -259,6 +249,7 @@ private struct HomeView: View {
             }
           },
           onSimilarGroupTap: { group in
+            // 堆叠组点击后，按组内顺序一张张浏览
             guard let cover = group.first else { return }
             selectedMediaDestination = .open(cover, in: group)
             if let index = sharedImages.firstIndex(where: { $0.id == cover.id }) {
@@ -295,155 +286,6 @@ private struct HomeView: View {
     if sharedSelectedIndex >= sharedImages.count {
       sharedSelectedIndex = sharedImages.count - 1
     }
-  }
-}
-
-// MARK: - Home stats
-
-enum HomeStatsMetrics {
-  static func mileageKilometers(for images: [GalleryImage]) -> Double {
-    let located = images
-      .filter(\.hasLocation)
-      .sorted { lhs, rhs in
-        if lhs.id != rhs.id { return lhs.id < rhs.id }
-        return lhs.engagementKey < rhs.engagementKey
-      }
-    guard located.count >= 2 else { return 0 }
-
-    var totalMeters: CLLocationDistance = 0
-    for index in 1..<located.count {
-      let previous = located[index - 1]
-      let current = located[index]
-      let from = CLLocation(latitude: previous.latitude, longitude: previous.longitude)
-      let to = CLLocation(latitude: current.latitude, longitude: current.longitude)
-      totalMeters += from.distance(from: to)
-    }
-    return totalMeters / 1_000
-  }
-
-  static func formatMileage(_ kilometers: Double) -> String {
-    let parts = mileageParts(kilometers)
-    if parts.unit == "米" { return "\(parts.value)m" }
-    return parts.value
-  }
-
-  static func mileageParts(_ kilometers: Double) -> (value: String, unit: String) {
-    if kilometers <= 0 { return ("0", "公里") }
-    if kilometers < 1 {
-      return ("\(Int((kilometers * 1_000).rounded()))", "米")
-    }
-    if kilometers < 10 {
-      return (String(format: "%.1f", kilometers), "公里")
-    }
-    if kilometers < 1_000 {
-      return (String(format: "%.0f", kilometers.rounded()), "公里")
-    }
-    return (HomeEngagementFormatting.formatCount(Int(kilometers.rounded())), "公里")
-  }
-}
-
-private struct HomeStatsBar: View {
-  let mileageKilometers: Double
-  let shareCount: Int
-  let likeCount: Int
-
-  @Environment(\.appSkin) private var appSkin
-
-  private var tokens: AppSkinTokens { appSkin.tokens }
-  private var primaryText: Color { tokens.primaryText ?? Color.primary }
-  private var secondaryText: Color { tokens.secondaryText ?? Color.secondary }
-
-  var body: some View {
-    let mileage = HomeStatsMetrics.mileageParts(mileageKilometers)
-
-    HStack(spacing: 0) {
-      HomeStatItem(
-        icon: "map.fill",
-        title: "里程",
-        value: mileage.value,
-        unit: mileage.unit,
-        primaryText: primaryText,
-        secondaryText: secondaryText,
-        accent: tokens.accent,
-        accessibilityLabel: "里程 \(mileage.value)\(mileage.unit)"
-      )
-      divider
-      HomeStatItem(
-        icon: "square.and.arrow.up",
-        title: "分享",
-        value: HomeEngagementFormatting.formatCount(shareCount),
-        unit: "次",
-        primaryText: primaryText,
-        secondaryText: secondaryText,
-        accent: tokens.accent,
-        accessibilityLabel: "分享 \(shareCount)次"
-      )
-      divider
-      HomeStatItem(
-        icon: "heart.fill",
-        title: "点赞",
-        value: HomeEngagementFormatting.formatCount(likeCount),
-        unit: "次",
-        primaryText: primaryText,
-        secondaryText: secondaryText,
-        accent: tokens.accent,
-        accessibilityLabel: "点赞 \(likeCount)次"
-      )
-    }
-    .padding(.vertical, 18)
-    .padding(.horizontal, 8)
-    .frame(minHeight: 96)
-    .background(
-      tokens.cardBackground,
-      in: RoundedRectangle(cornerRadius: tokens.cardCornerRadius, style: .continuous)
-    )
-    .overlay {
-      RoundedRectangle(cornerRadius: tokens.cardCornerRadius, style: .continuous)
-        .strokeBorder(tokens.stroke, lineWidth: 1)
-    }
-  }
-
-  private var divider: some View {
-    Rectangle()
-      .fill(tokens.stroke)
-      .frame(width: 1, height: 56)
-  }
-}
-
-private struct HomeStatItem: View {
-  let icon: String
-  let title: String
-  let value: String
-  let unit: String
-  let primaryText: Color
-  let secondaryText: Color
-  let accent: Color
-  let accessibilityLabel: String
-
-  var body: some View {
-    VStack(spacing: 6) {
-      HStack(spacing: 4) {
-        Image(systemName: icon)
-          .font(.caption.weight(.semibold))
-          .foregroundStyle(accent)
-        Text(title)
-          .font(.caption.weight(.medium))
-          .foregroundStyle(secondaryText)
-      }
-
-      Text(value)
-        .font(.title3.weight(.bold).monospacedDigit())
-        .foregroundStyle(primaryText)
-        .lineLimit(1)
-        .minimumScaleFactor(0.75)
-
-      Text(unit)
-        .font(.caption2)
-        .foregroundStyle(secondaryText)
-    }
-    .frame(maxWidth: .infinity)
-    .accessibilityElement(children: .ignore)
-    .accessibilityLabel(accessibilityLabel)
   }
 }
 

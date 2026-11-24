@@ -24,12 +24,33 @@ struct PersonalHomePageView: View {
     PublicProfileService.snapshot(for: identity, galleryStore: galleryStore)
   }
 
-  private var stats: ProfileStats {
-    ProfileStatsService.stats(
-      for: identity,
-      galleryStore: galleryStore,
-      engagementStore: engagementStore
-    )
+  /// 用于统计的完整分享图集（不仅限于「最近」预览）。
+  private var statsImages: [GalleryImage] {
+    if identity.isCurrentUser {
+      return galleryStore.sharedUserImages
+    }
+    let index = identity.sampleIndex ?? 0
+    return GalleryImage.samples.filter { $0.sampleAuthorIndex == index }
+  }
+
+  private var statsMileageKilometers: Double {
+    HomeStatsMetrics.mileageKilometers(for: statsImages)
+  }
+
+  private var statsShareCount: Int {
+    statsImages.count
+  }
+
+  private var statsLikeCount: Int {
+    statsImages.reduce(0) { $0 + engagementStore.likeCount(for: $1.engagementKey) }
+  }
+
+  private var statsCommentCount: Int {
+    statsImages.reduce(0) { $0 + engagementStore.commentCount(for: $1.engagementKey) }
+  }
+
+  private var statsMusicAlbumCount: Int {
+    statsImages.filter { $0.mediaType == .music }.count
   }
 
   var body: some View {
@@ -164,23 +185,13 @@ struct PersonalHomePageView: View {
   }
 
   private var statsSection: some View {
-    HStack(spacing: 0) {
-      ProfileStatCell(value: stats.likeCount, label: "点赞")
-      divider
-      ProfileStatCell(value: stats.shareCount, label: "分享")
-      divider
-      ProfileStatCell(value: stats.favoriteCount, label: "收藏")
-      divider
-      ProfileStatCell(value: stats.commentCount, label: "评论")
-    }
-    .padding(.vertical, 14)
-    .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-  }
-
-  private var divider: some View {
-    Rectangle()
-      .fill(Color(.separator).opacity(0.4))
-      .frame(width: 1, height: 32)
+    HomeStatsBar(
+      mileageKilometers: statsMileageKilometers,
+      shareCount: statsShareCount,
+      likeCount: statsLikeCount,
+      commentCount: statsCommentCount,
+      musicAlbumCount: statsMusicAlbumCount
+    )
   }
 
   private var followButton: some View {
@@ -245,32 +256,6 @@ struct PersonalHomePageView: View {
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .background(Color.white)
-  }
-}
-
-private struct ProfileStatCell: View {
-  let value: Int
-  let label: String
-
-  var body: some View {
-    VStack(spacing: 4) {
-      Text(formattedValue)
-        .font(.headline.weight(.bold))
-      Text(label)
-        .font(.caption)
-        .foregroundStyle(.secondary)
-    }
-    .frame(maxWidth: .infinity)
-  }
-
-  private var formattedValue: String {
-    if value >= 10_000 {
-      return String(format: "%.1f万", Double(value) / 10_000)
-    }
-    if value >= 1_000 {
-      return String(format: "%.1fk", Double(value) / 1_000)
-    }
-    return "\(value)"
   }
 }
 

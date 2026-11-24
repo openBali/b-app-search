@@ -413,15 +413,29 @@ struct ImageGalleryView: View {
 
 // MARK: - Shared thumbnail loader
 
+/// 缩略图内存缓存，避免瀑布流反复解码卡住主线程。
+enum GalleryThumbnailImageCache {
+  private static let cache = NSCache<NSURL, UIImage>()
+
+  static func image(for url: URL) -> UIImage? {
+    cache.object(forKey: url as NSURL)
+  }
+
+  static func store(_ image: UIImage, for url: URL) {
+    cache.setObject(image, forKey: url as NSURL)
+  }
+}
+
 struct GalleryThumbnailImage: View {
   let url: URL
 
+  @State private var localImage: UIImage?
+  @State private var localLoadFailed = false
+
   var body: some View {
     Group {
-      if url.isFileURL, let uiImage = UIImage(contentsOfFile: url.path) {
-        Image(uiImage: uiImage)
-          .resizable()
-          .scaledToFill()
+      if url.isFileURL {
+        localFileBody
       } else {
         AsyncImage(url: url) { phase in
           switch phase {
@@ -440,6 +454,23 @@ struct GalleryThumbnailImage: View {
     }
   }
 
+  @ViewBuilder
+  private var localFileBody: some View {
+    if let localImage {
+      Image(uiImage: localImage)
+        .resizable()
+        .scaledToFill()
+    } else if localLoadFailed {
+      placeholder
+    } else {
+      placeholder
+        .overlay { ProgressView() }
+        .task(id: url) {
+          await loadLocalFile()
+        }
+    }
+  }
+
   private var placeholder: some View {
     Color(.secondarySystemGroupedBackground)
       .overlay {
@@ -447,6 +478,25 @@ struct GalleryThumbnailImage: View {
           .font(.title2)
           .foregroundStyle(.secondary)
       }
+  }
+
+  private func loadLocalFile() async {
+    if let cached = GalleryThumbnailImageCache.image(for: url) {
+      localImage = cached
+      return
+    }
+
+    let path = url.path
+    let loaded = await Task.detached(priority: .userInitiated) {
+      UIImage(contentsOfFile: path)
+    }.value
+
+    if let loaded {
+      GalleryThumbnailImageCache.store(loaded, for: url)
+      localImage = loaded
+    } else {
+      localLoadFailed = true
+    }
   }
 }
 
@@ -493,58 +543,84 @@ enum SimilarImageGrouper {
 
 // MARK: - Waterfall grid
 
+enum GalleryWaterfallFeedItem: Identifiable, Hashable {
+  case photo(GallerySimilarImageGroup)
+  case ad(HomeAdPlacement)
+
+  var id: String {
+    switch self {
+    case .photo(let group): return "photo-\(group.id)"
+    case .ad(let placement): return "ad-\(placement.id)"
+    }
+  }
+}
+
 struct GalleryWaterfallView: View {
   let images: [GalleryImage]
   var columnCount: Int = 2
   var horizontalInset: CGFloat = 16
   var columnGap: CGFloat = 12
   var rowGap: CGFloat = 12
-  /// 将同标签相似图叠成群组；管理页等场景可关闭。
+  /// 将同标签相似图叠成群组；首页建议关闭，避免卡片堆叠“粘连”。
   var groupSimilarImages: Bool = true
+  /// 插入瀑布流的广告位（图文一体卡片）。
+  var adPlacements: [HomeAdPlacement] = []
+  /// 每多少张图片后插入一条广告；<=0 表示仅追加在末尾。
+  var adInsertEvery: Int = 5
   var onImageTap: (GalleryImage) -> Void
   /// 点击相似群组时回调（整组图片）；未设置则仅打开封面。
   var onSimilarGroupTap: (([GalleryImage]) -> Void)? = nil
   var onLocationTap: (GalleryImage) -> Void = { _ in }
+  var onAdTap: ((HomeAdPlacement) -> Void)? = nil
 
-  private var displayGroups: [GallerySimilarImageGroup] {
-    guard groupSimilarImages else {
-      return images.map {
-        GallerySimilarImageGroup(id: "solo:\($0.engagementKey)", images: [$0])
-      }
-    }
-    return SimilarImageGrouper.groups(from: images)
+  private var feedItems: [GalleryWaterfallFeedItem] {
+    Self.buildFeedItems(
+      images: images,
+      groupSimilarImages: groupSimilarImages,
+      adPlacements: adPlacements,
+      adInsertEvery: adInsertEvery
+    )
   }
 
-  private var masonryColumns: [[GallerySimilarImageGroup]] {
-    var columns = Array(repeating: [GallerySimilarImageGroup](), count: columnCount)
+  private var masonryColumns: [[GalleryWaterfallFeedItem]] {
+    var columns = Array(repeating: [GalleryWaterfallFeedItem](), count: columnCount)
     var columnHeights = Array(repeating: CGFloat.zero, count: columnCount)
 
-    for group in displayGroups {
+    for item in feedItems {
       let shortest = columnHeights.enumerated().min(by: { $0.element < $1.element })!.offset
-      columns[shortest].append(group)
-      columnHeights[shortest] += cellHeight(for: group) + rowGap
+      columns[shortest].append(item)
+      columnHeights[shortest] += cellHeight(for: item) + rowGap
     }
     return columns
   }
 
   var body: some View {
     HStack(alignment: .top, spacing: columnGap) {
-      ForEach(Array(masonryColumns.enumerated()), id: \.offset) { _, columnGroups in
+      ForEach(Array(masonryColumns.enumerated()), id: \.offset) { _, columnItems in
         VStack(spacing: rowGap) {
-          ForEach(columnGroups) { group in
-            if group.isCluster {
-              GallerySimilarGroupThumbnail(
-                group: group,
-                height: cellHeight(for: group),
-                onOpen: { openGroup(group) },
-                onLocationTap: onLocationTap
-              )
-            } else {
-              GalleryThumbnail(
-                image: group.cover,
-                height: cellHeight(for: group),
-                onOpen: { onImageTap(group.cover) },
-                onLocationTap: onLocationTap
+          ForEach(columnItems) { item in
+            switch item {
+            case .photo(let group):
+              if group.isCluster {
+                GallerySimilarGroupThumbnail(
+                  group: group,
+                  height: cellHeight(for: item),
+                  onOpen: { openGroup(group) },
+                  onLocationTap: onLocationTap
+                )
+              } else {
+                GalleryThumbnail(
+                  image: group.cover,
+                  height: cellHeight(for: item),
+                  onOpen: { onImageTap(group.cover) },
+                  onLocationTap: onLocationTap
+                )
+              }
+            case .ad(let placement):
+              GalleryWaterfallAdCard(
+                placement: placement,
+                height: cellHeight(for: item),
+                onTap: { onAdTap?(placement) }
               )
             }
           }
@@ -553,7 +629,7 @@ struct GalleryWaterfallView: View {
       }
     }
     .padding(.horizontal, horizontalInset)
-    .id(displayGroups.map(\.id))
+    .id(feedItems.map(\.id))
   }
 
   private func openGroup(_ group: GallerySimilarImageGroup) {
@@ -564,10 +640,130 @@ struct GalleryWaterfallView: View {
     }
   }
 
-  private func cellHeight(for group: GallerySimilarImageGroup) -> CGFloat {
+  private func cellHeight(for item: GalleryWaterfallFeedItem) -> CGFloat {
     let heights: [CGFloat] = [148, 212, 176, 228, 160, 196, 184, 220, 168]
-    let base = heights[abs(group.cover.id) % heights.count]
-    return group.isCluster ? base + 10 : base
+    switch item {
+    case .photo(let group):
+      let base = heights[abs(group.cover.id) % heights.count]
+      return group.isCluster ? base + 10 : base
+    case .ad(let placement):
+      let seed = abs(placement.id.utf8.reduce(0) { ($0 &* 31) &+ Int($1) })
+      return heights[seed % heights.count]
+    }
+  }
+
+  static func buildFeedItems(
+    images: [GalleryImage],
+    groupSimilarImages: Bool,
+    adPlacements: [HomeAdPlacement],
+    adInsertEvery: Int
+  ) -> [GalleryWaterfallFeedItem] {
+    let photoItems: [GalleryWaterfallFeedItem] = {
+      if groupSimilarImages {
+        return SimilarImageGrouper.groups(from: images).map { .photo($0) }
+      }
+      return images.map {
+        .photo(GallerySimilarImageGroup(id: "solo:\($0.engagementKey)", images: [$0]))
+      }
+    }()
+
+    guard !adPlacements.isEmpty else { return photoItems }
+
+    var result: [GalleryWaterfallFeedItem] = []
+    result.reserveCapacity(photoItems.count + adPlacements.count)
+    var adIndex = 0
+    let interval = adInsertEvery
+
+    if photoItems.isEmpty {
+      return adPlacements.map { .ad($0) }
+    }
+
+    for (index, photo) in photoItems.enumerated() {
+      result.append(photo)
+      let shouldInsert = interval > 0 && (index + 1) % interval == 0 && adIndex < adPlacements.count
+      if shouldInsert {
+        result.append(.ad(adPlacements[adIndex]))
+        adIndex += 1
+      }
+    }
+
+    while adIndex < adPlacements.count {
+      result.append(.ad(adPlacements[adIndex]))
+      adIndex += 1
+    }
+    return result
+  }
+}
+
+/// 瀑布流内广告卡：图片铺满，文案叠在图内。
+struct GalleryWaterfallAdCard: View {
+  let placement: HomeAdPlacement
+  let height: CGFloat
+  var onTap: () -> Void
+
+  private let cornerRadius: CGFloat = 14
+
+  var body: some View {
+    Button(action: onTap) {
+      ZStack(alignment: .bottomLeading) {
+        Color(.secondarySystemGroupedBackground)
+          .overlay {
+            AsyncImage(url: placement.heroImageURL) { phase in
+              switch phase {
+              case .success(let image):
+                image.resizable().scaledToFill()
+              case .failure:
+                adPlaceholder
+              default:
+                adPlaceholder.overlay { ProgressView() }
+              }
+            }
+          }
+          .clipped()
+
+        LinearGradient(
+          colors: [.clear, .black.opacity(0.2), .black.opacity(0.78)],
+          startPoint: .top,
+          endPoint: .bottom
+        )
+        .allowsHitTesting(false)
+
+        VStack(alignment: .leading, spacing: 6) {
+          Text("广告")
+            .font(.system(size: 9, weight: .bold))
+            .foregroundStyle(.white)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 3)
+            .background(Color.black.opacity(0.45), in: Capsule())
+
+          Text(placement.brandName)
+            .font(.caption.weight(.bold))
+            .foregroundStyle(.white)
+            .lineLimit(1)
+
+          Text(placement.hotProductCopy)
+            .font(.caption2.weight(.semibold))
+            .foregroundStyle(.white.opacity(0.92))
+            .lineLimit(2)
+        }
+        .padding(10)
+      }
+      .frame(maxWidth: .infinity)
+      .frame(height: height)
+      .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+      .shadow(color: .black.opacity(0.08), radius: 8, y: 3)
+    }
+    .buttonStyle(.plain)
+    .accessibilityLabel("广告 \(placement.brandName)，\(placement.hotProductCopy)")
+  }
+
+  private var adPlaceholder: some View {
+    Color(.tertiarySystemFill)
+      .overlay {
+        Image(systemName: "photo.on.rectangle.angled")
+          .font(.title3)
+          .foregroundStyle(.secondary)
+      }
   }
 }
 
@@ -609,20 +805,29 @@ private struct GallerySimilarGroupThumbnail: View {
     .frame(maxWidth: .infinity)
     .frame(height: height)
     .overlay(alignment: .topTrailing) {
-      Text("\(group.images.count) 张相似")
-        .font(.system(size: 10, weight: .bold))
-        .foregroundStyle(.white)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
-        .background(Color.black.opacity(0.62), in: Capsule())
-        .padding(.top, CGFloat(stackDepth) * 5 + 8)
-        .padding(.trailing, 8)
-        .allowsHitTesting(false)
+      VStack(alignment: .trailing, spacing: 4) {
+        Text("\(group.images.count) 张相似")
+          .font(.system(size: 10, weight: .bold))
+          .foregroundStyle(.white)
+          .padding(.horizontal, 8)
+          .padding(.vertical, 4)
+          .background(Color.black.opacity(0.62), in: Capsule())
+
+        Text("点击逐张查看")
+          .font(.system(size: 9, weight: .semibold))
+          .foregroundStyle(.white.opacity(0.92))
+          .padding(.horizontal, 7)
+          .padding(.vertical, 3)
+          .background(Color.black.opacity(0.42), in: Capsule())
+      }
+      .padding(.top, CGFloat(stackDepth) * 5 + 8)
+      .padding(.trailing, 8)
+      .allowsHitTesting(false)
     }
     .accessibilityElement(children: .ignore)
-    .accessibilityLabel("\(group.cover.tag)，\(group.images.count) 张相似图片")
+    .accessibilityLabel("\(group.cover.tag)，\(group.images.count) 张相似图片，点击逐张查看")
     .accessibilityAddTraits(.isButton)
-    .accessibilityAction(named: "打开相似组", onOpen)
+    .accessibilityAction(named: "逐张查看", onOpen)
   }
 }
 
@@ -634,19 +839,25 @@ struct GalleryThumbnail: View {
   var onOpen: () -> Void
   var onLocationTap: (GalleryImage) -> Void
 
+  @EnvironmentObject private var engagementStore: ImageEngagementStore
+
   private let cornerRadius: CGFloat = 14
 
   var body: some View {
     ZStack(alignment: .bottom) {
       thumbnailImage
         .contentShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
-        .onTapGesture(perform: onOpen)
+        .onTapGesture(count: 2) {
+          _ = engagementStore.toggleLike(for: image.engagementKey)
+        }
+        .onTapGesture(count: 1, perform: onOpen)
 
       GalleryImageOverlay(
         image: image,
         compactActions: true,
         onLocationTap: { onLocationTap(image) }
       )
+      .allowsHitTesting(true)
 
       // 叠在最上层，避免底部信息条拦截 music 播控点击
       GalleryMediaTypeChrome(image: image)
@@ -700,25 +911,29 @@ private struct GalleryImageOverlay: View {
             .foregroundStyle(.white.opacity(0.92))
             .lineLimit(compactActions ? 2 : 3)
             .multilineTextAlignment(.leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
 
-        GalleryActionButtons(
-          iconSize: compactActions ? 14 : 18,
-          buttonSize: compactActions ? 34 : 40,
-          isLiked: engagementStore.isLiked(image.engagementKey),
-          likeCountLabel: HomeEngagementFormatting.formatCount(
-            engagementStore.likeCount(for: image.engagementKey)
-          ),
-          onLike: {
-            _ = engagementStore.toggleLike(for: image.engagementKey)
-          },
-          onShare: { showShareHint = true },
-          onBeautify: { showBeautifyHint = true }
-        )
+        // 瀑布流缩略图保持简洁；点赞/分享等仅在全屏大图展示。
+        if !compactActions {
+          GalleryActionButtons(
+            iconSize: 18,
+            buttonSize: 40,
+            isLiked: engagementStore.isLiked(image.engagementKey),
+            likeCountLabel: HomeEngagementFormatting.formatCount(
+              engagementStore.likeCount(for: image.engagementKey)
+            ),
+            onLike: {
+              _ = engagementStore.toggleLike(for: image.engagementKey)
+            },
+            onShare: { showShareHint = true },
+            onBeautify: { showBeautifyHint = true }
+          )
+        }
       }
-      .padding(.horizontal, 12)
-      .padding(.vertical, 12)
+      .padding(.horizontal, compactActions ? 10 : 12)
+      .padding(.vertical, compactActions ? 10 : 12)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
     .alert("分享", isPresented: $showShareHint) {
@@ -742,9 +957,14 @@ private struct GalleryImageTagBadge: View {
 
   @State private var isHovering = false
 
-  private var collapsedMaxWidth: CGFloat { compact ? 120 : 156 }
-  private var maxHeight: CGFloat { compact ? 22 : 26 }
+  private var maxHeight: CGFloat { compact ? 24 : 26 }
   private var iconSide: CGFloat { compact ? 12 : 14 }
+
+  /// 瀑布流无右侧按钮：标签/地理位置拉满可用宽度；全屏仍用适中胶囊宽。
+  private var badgeMaxWidth: CGFloat {
+    if compact { return .infinity }
+    return isHovering ? 280 : 156
+  }
 
   private var labelText: String {
     var parts = [image.tag, image.category.displayName]
@@ -776,7 +996,7 @@ private struct GalleryImageTagBadge: View {
     .padding(.horizontal, 8)
     .padding(.vertical, 4)
     .frame(
-      maxWidth: isHovering ? 280 : collapsedMaxWidth,
+      maxWidth: badgeMaxWidth,
       maxHeight: maxHeight,
       alignment: .leading
     )

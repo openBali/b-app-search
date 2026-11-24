@@ -106,6 +106,9 @@ enum MembershipPlan: String, CaseIterable, Identifiable {
 enum AppSettings {
   /// 首次安装闪屏是否已完成；卸载重装后会再次显示。
   static let hasCompletedSplashKey = "hasCompletedSplash"
+  static let homeStatsCollapsedKey = "homeStatsCollapsed"
+  static let floatingShortcutEdgeKey = "floatingShortcutEdge"
+  static let floatingShortcutOffsetYKey = "floatingShortcutOffsetY"
   static let membershipTierKey = "membershipTier"
   static let membershipPlanKey = "membershipPlan"
 
